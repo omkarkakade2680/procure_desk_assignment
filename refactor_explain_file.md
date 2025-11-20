@@ -213,9 +213,26 @@ end
 ```ruby
 def record_payment(amount_paid, payment_method)
   return false unless amount_paid.positive?
-  
-  payment = payments.create(amount: to_cents(amount_paid), raw_payment_method: payment_method)
-  payment.persisted? ? payment : (errors.add(:base, payment.errors.full_messages.join(', ')) && false)
+    amount_in_cents = to_cents(amount_paid)
+
+    result = transaction do
+      lock!
+
+      current_owed = amount_owed_cents
+      # Prevent overpayment
+      if amount_in_cents > current_owed
+        errors.add(:base, "Payment amount ($#{amount_paid}) exceeds amount owed ($#{to_dollars(current_owed)})")
+        raise ActiveRecord::Rollback
+      end
+
+      payments.create!(amount: amount_in_cents, raw_payment_method: payment_method)
+    end
+
+    result || false
+  rescue ActiveRecord::RecordInvalid => e
+    errors.add(:base, e.record.errors.full_messages.join(", "))
+    false
+  end
 end
 ```
 
