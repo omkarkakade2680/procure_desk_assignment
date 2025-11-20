@@ -24,9 +24,14 @@ def fully_paid?
     amount_owed_cents <= 0
   end
 
-def amount_owed_cents
-    invoice_total - payments.sum(:amount)
+def amount_owed
+  to_dollars(amount_owed_cents)
+end
+
+ def to_dollars(cents)
+    (cents.to_f / CENTS_PER_DOLLAR).round(2)
   end
+
 ```
 
 **Rationale:** An invoice is fully paid when there's no remaining balance (amount_owed is zero or negative in case of overpayment). Using `<= 0` instead of `== 0` also handles edge cases where someone overpays an invoice.
