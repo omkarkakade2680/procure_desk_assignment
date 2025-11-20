@@ -185,7 +185,7 @@ end
 ### 9. Added Proper Validations
 **Added to Invoice:**
 ```ruby
-validates :invoice_total, presence: true, numericality: { greater_than: 0 }
+validates :invoice_total, presence: true, numericality: { only_integer: true, greater_than: 0 }
 ```
 
 **Added to Payment:**
