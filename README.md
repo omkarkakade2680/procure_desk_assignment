@@ -35,7 +35,7 @@ bin/rails console
 bin/rails console
 
 # Create an invoice
-invoice = Invoice.create(invoice_total: 200.00)
+invoice = Invoice.create(invoice_total: 100.00)
 
 # Record payments
 invoice.record_payment(100.00, :charge)  # Credit card
