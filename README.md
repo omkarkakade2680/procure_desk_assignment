@@ -75,7 +75,7 @@ bin/rails db:rollback    # Rollback last migration
 # One-time setup
 RAILS_ENV=test bin/rails db:create db:migrate
 
-# Run all tests (46 examples, 0 failures ✅)
+# Run all tests (48 examples, 0 failures ✅)
 bundle exec rspec
 
 # Run specific tests
