@@ -363,4 +363,4 @@ This ensures all bugs are fixed and the code works as expected.
 
 ## Summary
 
-The refactoring transformed buggy, non-functional code into a production-ready Rails application. All 6 critical bugs were fixed, 15+ improvements were made, and comprehensive tests ensure everything works correctly. The code now follows Rails 8.x conventions, handles errors gracefully, and provides a clean API for invoice and payment management.
+The refactoring transformed buggy, non-functional code into a production-ready Rails application. All 6 critical bugs were fixed, 15+ improvements were made, and comprehensive tests ensure everything works correctly. The code now follows Rails 8.1.1 conventions, handles errors gracefully, and provides a clean API for invoice and payment management.
