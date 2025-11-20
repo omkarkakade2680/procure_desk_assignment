@@ -318,8 +318,10 @@ def set_payment_method_id
 end
 
 def payment_method_must_be_valid
-  return unless raw_payment_method
-  errors.add(:raw_payment_method, "must be cash, check, or charge") unless PAYMENT_METHODS.key?(raw_payment_method.to_sym)
+ return unless raw_payment_method
+  unless PAYMENT_METHODS.key?(raw_payment_method.to_sym)
+    errors.add(:raw_payment_method, "must be cash, check, or charge")
+  end
 end
 ```
 
