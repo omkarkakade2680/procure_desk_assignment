@@ -158,6 +158,6 @@ bundle install
 
 ---
 
-**Built with:** Ruby 3.x, Rails 7.0, PostgreSQL  
-**Test Framework:** RSpec 6.x with Shoulda Matchers, FactoryBot  
-**Status:** ✅ All 46 tests passing
+**Built with:** Ruby 3.3.4, Rails 8.1.1, PostgreSQL  
+**Test Framework:** RSpec 6.0 with Shoulda Matchers, FactoryBot  
+**Status:** ✅ All 48 tests passing
