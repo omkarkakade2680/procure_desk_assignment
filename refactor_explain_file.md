@@ -92,8 +92,12 @@ end
 **Fixed To:**
 ```ruby
 def set_payment_method_id
-  self.payment_method_id = PAYMENT_METHODS[raw_payment_method.to_sym] if raw_payment_method
+  return if raw_payment_method.blank?
+  normalized = raw_payment_method.to_s.strip.downcase.to_sym
+  self.raw_payment_method = normalized
+  self.payment_method_id = PAYMENT_METHODS[normalized]
 end
+
 ```
 
 **Rationale:** Used standard Hash lookup with the bracket notation `[]`. Also added `.to_sym` to handle both string and symbol inputs, and added a guard clause to prevent nil errors.
