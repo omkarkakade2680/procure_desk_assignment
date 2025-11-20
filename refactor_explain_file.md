@@ -138,9 +138,8 @@ end
 **Fixed To:**
 ```ruby
 def convert_invoice_total_to_cents
-  if invoice_total && invoice_total < 10000
-    self.invoice_total = to_cents(invoice_total)
-  end
+   return if invoice_total.nil?
+   self.invoice_total = to_cents(invoice_total)
 end
 ```
 
