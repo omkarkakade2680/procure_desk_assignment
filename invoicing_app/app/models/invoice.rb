@@ -53,10 +53,6 @@ class Invoice < ApplicationRecord
 
   def convert_invoice_total_to_cents
     return if invoice_total.nil?
-
-    # Convert only if user entered dollars (Float or decimal)
-    if invoice_total.is_a?(Float) || invoice_total.to_s.include?(".")
-      self.invoice_total = to_cents(invoice_total)
-    end
+    self.invoice_total = (invoice_total.to_f * 100).round
   end
 end

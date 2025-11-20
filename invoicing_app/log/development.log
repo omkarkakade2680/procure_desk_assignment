@@ -1,0 +1,100 @@
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='InvoicingApp'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='InvoicingApp'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='InvoicingApp'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-11-19 12:31:18.001844', '2025-11-19 12:31:18.001845') RETURNING "key" /*application='InvoicingApp'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='InvoicingApp'*/[0m
+Migrating to CreateInvoices (20251119123025)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "invoices" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "invoice_total" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='InvoicingApp'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251119123025') RETURNING "version" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+Migrating to CreatePayments (20251119123033)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "payments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "invoice_id" integer NOT NULL, "payment_method_id" integer, "amount" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_62d18ea517"
+FOREIGN KEY ("invoice_id")
+  REFERENCES "invoices" ("id")
+) /*application='InvoicingApp'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_payments_on_invoice_id" ON "payments" ("invoice_id") /*application='InvoicingApp'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251119123033') RETURNING "version" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Create (0.6ms)[0m  [1m[32mINSERT INTO "invoices" ("invoice_total", "created_at", "updated_at") VALUES (20000, '2025-11-20 03:14:12.395304', '2025-11-20 03:14:12.395304') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.3ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 1 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.7ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 1 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (1, 3, 10000, '2025-11-20 03:14:24.814007', '2025-11-20 03:14:24.814007') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.1ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 1 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 1 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (1, 1, 5000, '2025-11-20 03:14:24.815164', '2025-11-20 03:14:24.815164') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.1ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 1 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 1 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (1, 2, 5000, '2025-11-20 03:14:24.816008', '2025-11-20 03:14:24.816008') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.3ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 1 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.2ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 1 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Load (0.2ms)[0m  [1m[34mSELECT "payments".* FROM "payments" WHERE "payments"."invoice_id" = 1 /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Create (0.8ms)[0m  [1m[32mINSERT INTO "invoices" ("invoice_total", "created_at", "updated_at") VALUES (10000, '2025-11-20 03:15:31.926807', '2025-11-20 03:15:31.926807') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.4ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 2 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.1ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 2 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.2ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (2, 1, 5000, '2025-11-20 03:15:36.112780', '2025-11-20 03:15:36.112780') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.2ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 2 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.2ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 2 /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.4ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 2 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.1ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 2 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.2ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (2, 2, 5000, '2025-11-20 03:16:04.518106', '2025-11-20 03:16:04.518106') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.2ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 2 /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Create (1.0ms)[0m  [1m[32mINSERT INTO "invoices" ("invoice_total", "created_at", "updated_at") VALUES (10000, '2025-11-20 03:16:20.123610', '2025-11-20 03:16:20.123610') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.9ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 3 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.1ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 3 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.2ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (3, 1, 5000, '2025-11-20 03:16:35.676902', '2025-11-20 03:16:35.676902') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.1ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 3 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 3 /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.2ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 3 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 3 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (3, 2, 5000, '2025-11-20 03:16:35.679696', '2025-11-20 03:16:35.679696') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 3 /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Create (1.6ms)[0m  [1m[32mINSERT INTO "invoices" ("invoice_total", "created_at", "updated_at") VALUES (10000, '2025-11-20 03:16:59.987686', '2025-11-20 03:16:59.987686') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Create (3.9ms)[0m  [1m[32mINSERT INTO "invoices" ("invoice_total", "created_at", "updated_at") VALUES (20000, '2025-11-20 03:38:01.200116', '2025-11-20 03:38:01.200116') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Create (3.2ms)[0m  [1m[32mINSERT INTO "invoices" ("invoice_total", "created_at", "updated_at") VALUES (20000, '2025-11-20 04:15:06.268171', '2025-11-20 04:15:06.268171') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (1.1ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 6 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (1.2ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 6 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (6, 3, 10000, '2025-11-20 04:15:23.997769', '2025-11-20 04:15:23.997769') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.3ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 6 /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.9ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 6 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.1ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 6 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.2ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (6, 1, 5000, '2025-11-20 04:15:35.752826', '2025-11-20 04:15:35.752826') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mInvoice Load (0.6ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = 6 LIMIT 1  /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.1ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 6 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Create (0.2ms)[0m  [1m[32mINSERT INTO "payments" ("invoice_id", "payment_method_id", "amount", "created_at", "updated_at") VALUES (6, 2, 5000, '2025-11-20 04:15:40.082997', '2025-11-20 04:15:40.082997') RETURNING "id" /*application='InvoicingApp'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.3ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 6 /*application='InvoicingApp'*/[0m
+  [1m[36mPayment Sum (0.2ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = 6 /*application='InvoicingApp'*/[0m

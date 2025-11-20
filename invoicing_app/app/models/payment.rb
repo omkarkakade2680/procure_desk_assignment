@@ -17,16 +17,18 @@ class Payment < ApplicationRecord
   private
 
   def set_payment_method_id
-    normalized_method = raw_payment_method.to_s.strip.downcase.to_sym
-    self.raw_payment_method = normalized_method
-    self.payment_method_id = PAYMENT_METHODS[normalized_method]
-  rescue KeyError
-    errors.add(:raw_payment_method, "is invalid")
+    return if raw_payment_method.blank?
+    normalized = raw_payment_method.to_s.strip.downcase.to_sym
+    self.raw_payment_method = normalized
+    self.payment_method_id = PAYMENT_METHODS[normalized]
   end
 
   def payment_method_must_be_valid
-    return unless raw_payment_method
-    normalized = raw_payment_method.to_s.strip.downcase.to_sym
-    errors.add(:raw_payment_method, "must be one of: #{PAYMENT_METHODS.keys.join(', ')}") unless PAYMENT_METHODS.key?(normalized)
+    def payment_method_must_be_valid
+      return unless raw_payment_method
+      unless PAYMENT_METHODS.key?(raw_payment_method.to_sym)
+        errors.add(:raw_payment_method, "must be cash, check, or charge")
+      end
+    end
   end
 end

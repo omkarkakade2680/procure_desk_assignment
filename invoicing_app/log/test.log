@@ -1,0 +1,1302 @@
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "invoices"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "invoices" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "invoice_total" integer, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "payments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "payments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "amount" integer, "created_at" datetime(6) NOT NULL, "invoice_id" integer NOT NULL, "payment_method_id" integer, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_payments_on_invoice_id" ON "payments" ("invoice_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "apayments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "amount" integer, "created_at" datetime(6) NOT NULL, "invoice_id" integer NOT NULL, "payment_method_id" integer, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_apayments_on_invoice_id" ON "apayments" ("invoice_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "apayments" ("id","amount","created_at","invoice_id","payment_method_id","updated_at")
+                     SELECT "id","amount","created_at","invoice_id","payment_method_id","updated_at" FROM "payments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "payments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "payments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "amount" integer, "created_at" datetime(6) NOT NULL, "invoice_id" integer NOT NULL, "payment_method_id" integer, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_62d18ea517"
+FOREIGN KEY ("invoice_id")
+  REFERENCES "invoices" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_payments_on_invoice_id" ON "payments" ("invoice_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("id","amount","created_at","invoice_id","payment_method_id","updated_at")
+                     SELECT "id","amount","created_at","invoice_id","payment_method_id","updated_at" FROM "apayments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "apayments"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251119123033)[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251119123025);[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'test', '2025-11-20 04:25:45.359784', '2025-11-20 04:25:45.359784') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '464804c42ba50121c685eeaad75c8012b3545b93', '2025-11-20 04:25:45.360045', '2025-11-20 04:25:45.360045') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:25:54.191248"], ["invoice_total", 100], ["updated_at", "2025-11-20 04:25:54.191248"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.812998"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.812998"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.816571"], ["invoice_total", 10000], ["updated_at", "2025-11-20 04:28:13.816571"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.819160"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.819160"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.826153"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.826153"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:28:13.828147"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.828147"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.828721"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.828721"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:28:13.829320"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.829320"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.829799"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.829799"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:28:13.830289"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.830289"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.830807"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.830807"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.831773"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.831773"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.833064"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.833064"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.833552"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.833552"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 7550], ["created_at", "2025-11-20 04:28:13.834083"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.834083"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.834549"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.834549"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.835020"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.835020"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:28:13.835480"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:28:13.835480"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 2500], ["created_at", "2025-11-20 04:28:13.835934"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:28:13.835934"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.836398"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.836398"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:28:13.836899"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.836899"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.837401"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.837401"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:28:13.838018"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.838018"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.838529"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.838529"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:28:13.839092"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.839092"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.839681"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.839681"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10050], ["created_at", "2025-11-20 04:28:13.840181"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.840181"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.840603"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.840603"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.841100"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.841100"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.841478"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.841478"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.841971"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:28:13.841971"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.842339"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.842339"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.842808"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:28:13.842808"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.843252"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.843252"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.844263"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.844263"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.845371"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.845371"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.845750"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.845750"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.846321"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.846321"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.846725"], ["invoice_total", 50000], ["updated_at", "2025-11-20 04:28:13.846725"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:28:13.847206"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.847206"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 15000], ["created_at", "2025-11-20 04:28:13.847840"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:28:13.847840"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 15000], ["created_at", "2025-11-20 04:28:13.848489"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:28:13.848489"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.849827"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.849827"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.850769"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.850769"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.851057"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.851057"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.851452"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.851452"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.851728"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:28:13.851728"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.852116"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.852116"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.852396"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:28:13.852396"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.852799"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.852799"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.853078"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.853078"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.853501"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.853501"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.853773"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:28:13.853773"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.854194"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.854194"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.854462"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:28:13.854462"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.854886"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.854886"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.856092"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.856092"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.856569"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.856569"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.857071"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.857071"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10050], ["created_at", "2025-11-20 04:28:13.857344"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.857344"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.857747"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.857747"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 1000000], ["created_at", "2025-11-20 04:28:13.858019"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.858019"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.858424"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.858424"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:28:13.858697"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.858697"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Load (0.0ms)[0m  [1m[34mSELECT "payments".* FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Destroy (0.0ms)[0m  [1m[31mDELETE FROM "payments" WHERE "payments"."id" = ?[0m  [["id", 1]]
+  [1m[36mInvoice Destroy (0.0ms)[0m  [1m[31mDELETE FROM "invoices" WHERE "invoices"."id" = ?[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Load (0.0ms)[0m  [1m[34mSELECT "payments".* FROM "payments" WHERE "payments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.859732"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.859732"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:28:13.860025"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:28:13.860025"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 3000], ["created_at", "2025-11-20 04:28:13.860284"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:28:13.860284"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 2000], ["created_at", "2025-11-20 04:28:13.860537"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:28:13.860537"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Pluck (0.0ms)[0m  [1m[34mSELECT "payments"."payment_method_id" FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.861094"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.861094"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:28:13.861645"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:28:13.861645"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.287611"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.287611"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.288919"], ["invoice_total", 10000], ["updated_at", "2025-11-20 04:32:12.288919"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.289420"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.289420"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.294432"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.294432"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:32:12.296288"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.296288"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.296839"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.296839"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:32:12.297386"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.297386"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.297862"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.297862"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:32:12.298379"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.298379"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.298863"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.298863"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.300125"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.300125"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.301099"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.301099"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.301619"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.301619"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 7550], ["created_at", "2025-11-20 04:32:12.302142"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.302142"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.302613"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.302613"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.303114"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.303114"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:32:12.303582"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:32:12.303582"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 2500], ["created_at", "2025-11-20 04:32:12.304039"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:32:12.304039"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.304516"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.304516"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:32:12.305013"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.305013"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.305507"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.305507"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:32:12.306114"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.306114"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.306574"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.306574"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:32:12.307081"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.307081"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.307732"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.307732"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.1ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10050], ["created_at", "2025-11-20 04:32:12.314148"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.314148"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.314742"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.314742"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.315288"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.315288"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.315932"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.315932"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.316423"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:32:12.316423"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.316815"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.316815"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.317334"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:32:12.317334"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.317901"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.317901"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.318907"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.318907"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.320230"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.320230"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.320653"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.320653"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.321435"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.321435"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.321871"], ["invoice_total", 50000], ["updated_at", "2025-11-20 04:32:12.321871"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:32:12.322379"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.322379"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 15000], ["created_at", "2025-11-20 04:32:12.323570"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:32:12.323570"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 15000], ["created_at", "2025-11-20 04:32:12.324179"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:32:12.324179"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.327042"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.327042"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.328048"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.328048"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.328371"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.328371"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.328761"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.328761"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.329057"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:32:12.329057"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.329445"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.329445"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.329740"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:32:12.329740"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.330158"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.330158"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.330456"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.330456"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.330871"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.330871"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.331167"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:32:12.331167"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.331578"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.331578"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.331874"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:32:12.331874"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.332302"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.332302"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.334164"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.334164"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.334740"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.334740"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.335311"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.335311"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10050], ["created_at", "2025-11-20 04:32:12.335632"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.335632"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.336064"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.336064"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 1000000], ["created_at", "2025-11-20 04:32:12.336367"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.336367"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.336791"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.336791"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:32:12.337094"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.337094"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Load (0.0ms)[0m  [1m[34mSELECT "payments".* FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Destroy (0.0ms)[0m  [1m[31mDELETE FROM "payments" WHERE "payments"."id" = ?[0m  [["id", 1]]
+  [1m[36mInvoice Destroy (0.0ms)[0m  [1m[31mDELETE FROM "invoices" WHERE "invoices"."id" = ?[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Load (0.0ms)[0m  [1m[34mSELECT "payments".* FROM "payments" WHERE "payments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.338180"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.338180"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:32:12.338487"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:32:12.338487"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.1ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 3000], ["created_at", "2025-11-20 04:32:12.343975"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:32:12.343975"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 2000], ["created_at", "2025-11-20 04:32:12.344266"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:32:12.344266"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Pluck (0.0ms)[0m  [1m[34mSELECT "payments"."payment_method_id" FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.344910"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.344910"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:32:12.345672"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:32:12.345672"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.344907"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.344907"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.346149"], ["invoice_total", 10000], ["updated_at", "2025-11-20 04:33:19.346149"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.346630"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.346630"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.351271"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.351271"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:33:19.353177"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.353177"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.353745"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.353745"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:33:19.354314"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.354314"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.354815"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.354815"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:33:19.355328"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.355328"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.355813"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.355813"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.356964"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.356964"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.357924"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.357924"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.358456"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.358456"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 7550], ["created_at", "2025-11-20 04:33:19.358969"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.358969"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.359452"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.359452"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.359955"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.359955"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:33:19.360425"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:33:19.360425"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 2500], ["created_at", "2025-11-20 04:33:19.360879"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:33:19.360879"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.361349"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.361349"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:33:19.361854"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.361854"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.362349"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.362349"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:33:19.362950"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.362950"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.363414"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.363414"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.1ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:33:19.369670"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.369670"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.370429"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.370429"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10050], ["created_at", "2025-11-20 04:33:19.370956"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.370956"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.371634"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.371634"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.372113"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.372113"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.372490"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.372490"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.372981"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:33:19.372981"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.373501"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.373501"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.373992"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:33:19.373992"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.374384"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.374384"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.375485"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.375485"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.376695"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.376695"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.377114"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.377114"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.2ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.377718"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.377718"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.378350"], ["invoice_total", 50000], ["updated_at", "2025-11-20 04:33:19.378350"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 20000], ["created_at", "2025-11-20 04:33:19.378931"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.378931"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 15000], ["created_at", "2025-11-20 04:33:19.380034"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:33:19.380034"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ? [0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 15000], ["created_at", "2025-11-20 04:33:19.380768"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:33:19.380768"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mInvoice Load (0.0ms)[0m  [1m[34mSELECT "invoices".* FROM "invoices" WHERE "invoices"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Sum (0.0ms)[0m  [1m[34mSELECT SUM("payments"."amount") FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.383865"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.383865"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.384824"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.384824"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.385129"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.385129"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.385540"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.385540"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.385842"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:33:19.385842"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.386237"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.386237"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.386538"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:33:19.386538"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.386965"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.386965"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.387259"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.387259"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.387671"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.387671"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.387946"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:33:19.387946"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.388353"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.388353"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.388630"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:33:19.388630"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.389058"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.389058"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.389547"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.389547"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.390015"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.390015"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.390509"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.390509"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10050], ["created_at", "2025-11-20 04:33:19.390778"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.390778"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.391171"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.391171"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 1000000], ["created_at", "2025-11-20 04:33:19.391444"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.391444"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (5.1ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.391848"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.391848"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 10000], ["created_at", "2025-11-20 04:33:19.397257"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.397257"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Load (0.1ms)[0m  [1m[34mSELECT "payments".* FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Destroy (0.0ms)[0m  [1m[31mDELETE FROM "payments" WHERE "payments"."id" = ?[0m  [["id", 1]]
+  [1m[36mInvoice Destroy (0.0ms)[0m  [1m[31mDELETE FROM "invoices" WHERE "invoices"."id" = ?[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Load (0.0ms)[0m  [1m[34mSELECT "payments".* FROM "payments" WHERE "payments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.3ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.398515"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.398515"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 5000], ["created_at", "2025-11-20 04:33:19.399030"], ["invoice_id", 1], ["payment_method_id", 1], ["updated_at", "2025-11-20 04:33:19.399030"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 3000], ["created_at", "2025-11-20 04:33:19.399287"], ["invoice_id", 1], ["payment_method_id", 2], ["updated_at", "2025-11-20 04:33:19.399287"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPayment Create (0.0ms)[0m  [1m[32mINSERT INTO "payments" ("amount", "created_at", "invoice_id", "payment_method_id", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["amount", 2000], ["created_at", "2025-11-20 04:33:19.399547"], ["invoice_id", 1], ["payment_method_id", 3], ["updated_at", "2025-11-20 04:33:19.399547"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPayment Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mPayment Pluck (0.0ms)[0m  [1m[34mSELECT "payments"."payment_method_id" FROM "payments" WHERE "payments"."invoice_id" = ?[0m  [["invoice_id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.400140"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.400140"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInvoice Create (0.0ms)[0m  [1m[32mINSERT INTO "invoices" ("created_at", "invoice_total", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["created_at", "2025-11-20 04:33:19.400806"], ["invoice_total", 20000], ["updated_at", "2025-11-20 04:33:19.400806"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
