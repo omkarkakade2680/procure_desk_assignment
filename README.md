@@ -35,12 +35,12 @@ bin/rails console
 bin/rails console
 
 # Create an invoice
-invoice = Invoice.create(invoice_total: 100.00)
+invoice = Invoice.create(invoice_total: 300.00)
 
 # Record payments
 invoice.record_payment(100.00, :charge)  # Credit card
-invoice.record_payment(50.00, :cash)     # Cash  
-invoice.record_payment(50.00, :check)    # Check
+invoice.record_payment(100.00, :cash)     # Cash  
+invoice.record_payment(100.00, :check)    # Check
 
 # Check status
 invoice.fully_paid?    # => true
