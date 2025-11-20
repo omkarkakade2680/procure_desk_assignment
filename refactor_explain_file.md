@@ -21,8 +21,12 @@ end
 **Fixed To:**
 ```ruby
 def fully_paid?
-  amount_owed <= 0
-end
+    amount_owed_cents <= 0
+  end
+
+def amount_owed_cents
+    invoice_total - payments.sum(:amount)
+  end
 ```
 
 **Rationale:** An invoice is fully paid when there's no remaining balance (amount_owed is zero or negative in case of overpayment). Using `<= 0` instead of `== 0` also handles edge cases where someone overpays an invoice.
@@ -42,8 +46,12 @@ end
 **Fixed To:**
 ```ruby
 def amount_owed
-  to_dollars(invoice_total - payments.sum(:amount))
+ to_dollars(amount_owed_cents)
 end
+
+def amount_owed_cents
+    invoice_total - payments.sum(:amount)
+  end
 ```
 
 **Rationale:** Used the correct column name from the schema and added proper currency conversion to return the result in dollars (since internal storage is in cents).
