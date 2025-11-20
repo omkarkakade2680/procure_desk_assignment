@@ -24,11 +24,9 @@ class Payment < ApplicationRecord
   end
 
   def payment_method_must_be_valid
-    def payment_method_must_be_valid
-      return unless raw_payment_method
-      unless PAYMENT_METHODS.key?(raw_payment_method.to_sym)
-        errors.add(:raw_payment_method, "must be cash, check, or charge")
-      end
+    return unless raw_payment_method
+    unless PAYMENT_METHODS.key?(raw_payment_method.to_sym)
+      errors.add(:raw_payment_method, "must be cash, check, or charge")
     end
   end
 end
