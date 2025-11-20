@@ -53,6 +53,6 @@ class Invoice < ApplicationRecord
 
   def convert_invoice_total_to_cents
     return if invoice_total.nil?
-    self.invoice_total = (invoice_total.to_f * 100).round
+    self.invoice_total = to_cents(invoice_total)
   end
 end
